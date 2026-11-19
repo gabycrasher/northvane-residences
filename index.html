@@ -103,7 +103,7 @@
           <select name="type"><option value="">Any type</option><option value="villa">Villa</option><option value="apartment">Apartment</option><option value="townhouse">Townhouse</option></select>
         </label>
         <label><span>Max budget</span>
-          <select name="budget"><option value="">No limit</option><option value="300000">$300,000</option><option value="600000">$600,000</option><option value="1000000">$1,000,000</option><option value="3000">$3,000 / month</option></select>
+          <select name="budget" data-budget><option value="">No limit</option><option value="b1" data-ugx="1200000000" data-usd="300000">UGX 1.2B</option><option value="b2" data-ugx="2500000000" data-usd="600000">UGX 2.5B</option><option value="b3" data-ugx="4000000000" data-usd="1000000">UGX 4B</option><option value="r1" data-ugx="11000000" data-usd="3000" data-rent>UGX 11M / month</option></select>
         </label>
         <button class="btn" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>Search homes</button>
       </form>
@@ -130,6 +130,7 @@
       <button type="button" class="chip" data-filter="sale" aria-pressed="false">For sale</button>
       <button type="button" class="chip" data-filter="rent" aria-pressed="false">For rent</button>
       <button type="button" class="chip" data-filter="saved" aria-pressed="false">Saved <span data-saved-count>0</span></button>
+      <div class="cur" role="group" aria-label="Show prices in"><button type="button" data-cur="UGX" aria-pressed="true">UGX</button><button type="button" data-cur="USD" aria-pressed="false">USD</button></div>
     </div>
     <p class="result-note" data-result-note aria-live="polite"></p>
     <div class="cards" data-cards></div>
@@ -184,16 +185,18 @@
       <p class="eyebrow">Mortgage calculator</p>
       <h2 class="section-title" id="calc-title">Know your number <em>before you fall in love.</em></h2>
       <p>Move the sliders to see a monthly repayment. Figures are an illustration only.</p>
+      <div class="cur" role="group" aria-label="Show prices in"><button type="button" data-cur="UGX" aria-pressed="true">UGX</button><button type="button" data-cur="USD" aria-pressed="false">USD</button></div>
+      <p class="cur-note">Indicative rate: UGX 3,700 = $1. Higher-end homes are often quoted in dollars, so switch whenever you like.</p>
     </div>
     <form class="calc-box" action="https://wa.me/256756728345" method="get" target="_blank" data-calc>
       <input type="hidden" name="text" value="Hello Northvane, I'd like to talk to an agent about a mortgage.">
       <label><span>Home price <output data-out="price"></output></span><input type="range" name="price" min="80000" max="2000000" step="5000" value="450000"></label>
       <label><span>Deposit <output data-out="deposit"></output></span><input type="range" name="deposit" min="10" max="60" step="1" value="25"></label>
-      <label><span>Interest rate <output data-out="rate"></output></span><input type="range" name="rate" min="6" max="20" step="0.25" value="11.5"></label>
+      <label><span>Interest rate <output data-out="rate"></output></span><input type="range" name="rate" min="6" max="24" step="0.25" value="16"></label>
       <label><span>Term <output data-out="years"></output></span><input type="range" name="years" min="5" max="25" step="1" value="20"></label>
       <div class="calc-result">
-        <div class="donut" data-donut><svg viewBox="0 0 42 42"><circle class="track" cx="21" cy="21" r="15.9" /><circle class="principal" cx="21" cy="21" r="15.9" data-donut-principal /></svg><div><small>Monthly</small><b data-monthly>$0</b></div></div>
-        <dl><div><dt>Loan amount</dt><dd data-loan>$0</dd></div><div><dt>Total interest</dt><dd data-interest>$0</dd></div><div><dt>Total repaid</dt><dd data-total>$0</dd></div></dl>
+        <div class="donut" data-donut><svg viewBox="0 0 42 42"><circle class="track" cx="21" cy="21" r="15.9" /><circle class="principal" cx="21" cy="21" r="15.9" data-donut-principal /></svg><div><small>Monthly</small><b data-monthly>UGX 0</b></div></div>
+        <dl><div><dt>Loan amount</dt><dd data-loan>UGX 0</dd></div><div><dt>Total interest</dt><dd data-interest>UGX 0</dd></div><div><dt>Total repaid</dt><dd data-total>UGX 0</dd></div></dl>
       </div>
       <button class="btn btn-wa" type="submit">Ask an agent about this budget</button>
     </form>

@@ -8,7 +8,19 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var img = function (id, w, h) { return 'https://images.unsplash.com/' + id + '?auto=format&fit=crop&w=' + w + (h ? '&h=' + h : '') + '&q=78'; };
-  var usd = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+  /* Prices are stored in US dollars and shown in UGX by default (indicative rate), with a UGX / USD switch. */
+  var RATE = 3700, CUR = 'UGX';
+  try { CUR = localStorage.getItem('nv-cur') === 'USD' ? 'USD' : 'UGX'; } catch (e) { /* storage blocked */ }
+  var trim = function (x, d) { return String(+x.toFixed(d)); };
+  // Compact like Ugandan listing sites (UGX 2.07B, UGX 8.9M); full = every digit (used for the monthly repayment).
+  function money(usdValue, full) {
+    if (CUR === 'USD') return '$' + Math.round(usdValue).toLocaleString('en-US');
+    var v = usdValue * RATE;
+    if (full || v < 1e6) return 'UGX ' + (Math.round(v / 1000) * 1000).toLocaleString('en-US');
+    if (v >= 1e9) return 'UGX ' + trim(v / 1e9, 2) + 'B';
+    return 'UGX ' + trim(v / 1e6, v >= 1e8 ? 0 : 1) + 'M';
+  }
+  var usd = function (n) { return money(n); };
   // Enquiries go to WhatsApp with the details pre-filled (opened from the click, so pop-up blockers allow it).
   var WA_NUMBER = '256756728345';
   function whatsapp(lines) {
@@ -64,7 +76,7 @@
   var priceLabel = function (h) { return h.deal === 'rent' ? usd(h.price) + '<small> / month</small>' : usd(h.price); };
   var saved = [];
   try { saved = JSON.parse(localStorage.getItem('nv-saved') || '[]'); } catch (e) { saved = []; }
-  var state = { filter: 'all', area: '', type: '', budget: 0 };
+  var state = { filter: 'all', area: '', type: '', budget: 0, rentBudget: false };
   var cards = $('[data-cards]'), note = $('[data-result-note]'), savedCount = $('[data-saved-count]');
   var heart = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 4 4.5 7.3 4.5c2 0 3.5 1.1 4.7 2.7 1.2-1.6 2.7-2.7 4.7-2.7 3.3 0 5.7 3.1 4.5 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>';
 
@@ -75,7 +87,7 @@
     if (state.area && h.area !== state.area) return false;
     if (state.type && h.type !== state.type) return false;
     if (state.budget) {
-      var monthly = state.budget < 10000;
+      var monthly = state.rentBudget;
       if (monthly && (h.deal !== 'rent' || h.price > state.budget)) return false;
       if (!monthly && (h.deal !== 'sale' || h.price > state.budget)) return false;
     }
@@ -87,7 +99,7 @@
     var bits = [];
     if (state.area) bits.push(state.area);
     if (state.type) bits.push(state.type + 's');
-    if (state.budget) bits.push('under ' + usd(state.budget) + (state.budget < 10000 ? '/month' : ''));
+    if (state.budget) bits.push('under ' + money(state.budget) + (state.rentBudget ? '/month' : ''));
     note.textContent = list.length + ' home' + (list.length === 1 ? '' : 's') + (bits.length ? ' · ' + bits.join(' · ') : '') + (bits.length ? '  (clear the search to see all)' : '');
     if (!list.length) {
       cards.innerHTML = '<p class="empty">' + (state.filter === 'saved' ? 'Tap the heart on any home to save it here.' : 'No homes match that search yet. Try another area or budget.') + '</p>';
@@ -129,7 +141,10 @@
     if (o) openHome(o.dataset.open);
   });
   function applySearch(f) {
-    state.area = f.area.value; state.type = f.type.value; state.budget = +f.budget.value || 0;
+    state.area = f.area.value; state.type = f.type.value;
+    var opt = f.budget.options[f.budget.selectedIndex];
+    state.budget = opt.value ? (CUR === 'UGX' ? +opt.dataset.ugx / RATE : +opt.dataset.usd) : 0;
+    state.rentBudget = opt.hasAttribute('data-rent');
     state.filter = 'all';
     $$('[data-filter]').forEach(function (x) { x.classList.toggle('is-on', x.dataset.filter === 'all'); x.setAttribute('aria-pressed', String(x.dataset.filter === 'all')); });
     render();
@@ -142,11 +157,13 @@
     applySearch(f);
     whatsapp(["Hello Northvane, I'm looking for a home.", 'Area: ' + optText(f.area) + ' · Type: ' + optText(f.type) + ' · Budget: ' + optText(f.budget)]);
   });
-  note.addEventListener('click', function () { if (!state.area && !state.type && !state.budget) return; state.area = state.type = ''; state.budget = 0; $('[data-search]').reset(); render(); });
+  note.addEventListener('click', function () { if (!state.area && !state.type && !state.budget) return; state.area = state.type = ''; state.budget = 0; state.rentBudget = false; $('[data-search]').reset(); render(); });
 
   /* Details dialog */
   var dlg = $('[data-dialog]'), dlgBody = $('[data-dialog-body]');
+  var openId = null;
   function openHome(id) {
+    openId = id;
     var h = homes.filter(function (x) { return x.id === id; })[0];
     if (!h) return;
     dlgBody.innerHTML = '<div class="dlg-gallery">' + h.imgs.map(function (p, i) { return '<img src="' + img(p, i ? 600 : 1200, i ? 450 : 900) + '" alt="' + h.title + ', photo ' + (i + 1) + '">'; }).join('') + '</div>' +
@@ -194,16 +211,18 @@
 
   /* ---------- Neighbourhoods ---------- */
   var areas = {
-    Kololo: { vibe: 'Embassies, leafy avenues and the airstrip park. Quiet streets five minutes from the city.', price: '$950k', commute: '6 min', schools: '9', homes: 'Villas & apartments' },
-    Naguru: { vibe: 'Hilltop family homes, cafés along Naguru Drive and some of the city\'s best views.', price: '$720k', commute: '12 min', schools: '7', homes: 'Family homes' },
-    Bugolobi: { vibe: 'Walkable, social and close to everything. Popular with young professionals.', price: '$2.1k/mo', commute: '10 min', schools: '5', homes: 'Apartments' },
-    Muyenga: { vibe: 'Tank Hill sunsets, lake glimpses and generous plots on winding roads.', price: '$540k', commute: '18 min', schools: '8', homes: 'Hillside villas' },
-    Lubowa: { vibe: 'Gated estates, wide lawns and quick access to the Entebbe Expressway.', price: '$310k', commute: '25 min', schools: '11', homes: 'Townhouses' },
-    Entebbe: { vibe: 'Lakeside living by the botanical gardens, fifteen minutes from the airport.', price: '$2.8k/mo', commute: '45 min', schools: '6', homes: 'Lake homes' }
+    Kololo: { vibe: 'Embassies, leafy avenues and the airstrip park. Quiet streets five minutes from the city.', price: 950000, commute: '6 min', schools: '9', homes: 'Villas & apartments' },
+    Naguru: { vibe: 'Hilltop family homes, cafés along Naguru Drive and some of the city\'s best views.', price: 720000, commute: '12 min', schools: '7', homes: 'Family homes' },
+    Bugolobi: { vibe: 'Walkable, social and close to everything. Popular with young professionals.', price: 2100, rent: true, commute: '10 min', schools: '5', homes: 'Apartments' },
+    Muyenga: { vibe: 'Tank Hill sunsets, lake glimpses and generous plots on winding roads.', price: 540000, commute: '18 min', schools: '8', homes: 'Hillside villas' },
+    Lubowa: { vibe: 'Gated estates, wide lawns and quick access to the Entebbe Expressway.', price: 310000, commute: '25 min', schools: '11', homes: 'Townhouses' },
+    Entebbe: { vibe: 'Lakeside living by the botanical gardens, fifteen minutes from the airport.', price: 2800, rent: true, commute: '45 min', schools: '6', homes: 'Lake homes' }
   };
   var tabs = $('[data-area-tabs]'), areaCard = $('[data-area-card]');
   tabs.innerHTML = Object.keys(areas).map(function (n) { return '<button type="button" class="chip" role="tab" aria-selected="false" data-area="' + n + '">' + n + '</button>'; }).join('');
+  var currentArea = 'Kololo';
   function showArea(name) {
+    currentArea = name;
     var a = areas[name];
     $$('[data-area]').forEach(function (b) {
       var on = b.dataset.area === name;
@@ -212,7 +231,7 @@
     });
     var count = homes.filter(function (h) { return h.area === name; }).length;
     areaCard.innerHTML = '<p class="eyebrow">Neighbourhood</p><h3>' + name + '</h3><p class="vibe">' + a.vibe + '</p>' +
-      '<dl class="area-facts"><div><dt>Typical</dt><dd>' + a.price + '</dd></div><div><dt>To city</dt><dd>' + a.commute + '</dd></div><div><dt>Schools</dt><dd>' + a.schools + '</dd></div></dl>' +
+      '<dl class="area-facts"><div><dt>Typical</dt><dd>' + money(a.price) + (a.rent ? '/mo' : '') + '</dd></div><div><dt>To city</dt><dd>' + a.commute + '</dd></div><div><dt>Schools</dt><dd>' + a.schools + '</dd></div></dl>' +
       '<button class="btn" type="button" data-area-search="' + name + '">See ' + count + ' home' + (count === 1 ? '' : 's') + ' in ' + name + '</button>';
     if (gsap && !reduce) gsap.from(areaCard.children, { y: 12, opacity: 0, duration: .45, stagger: .05, ease: 'power2.out' });
   }
@@ -235,7 +254,7 @@
     $('[data-out="deposit"]').textContent = dep + '% · ' + usd(price * dep / 100);
     $('[data-out="rate"]').textContent = rate.toFixed(2) + '%';
     $('[data-out="years"]').textContent = years + ' years';
-    $('[data-monthly]').textContent = usd(monthly);
+    $('[data-monthly]').textContent = money(monthly, true);
     $('[data-loan]').textContent = usd(loan);
     $('[data-interest]').textContent = usd(interest);
     $('[data-total]').textContent = usd(total);
@@ -251,6 +270,27 @@
     whatsapp(["Hello Northvane, I'd like to speak to an agent about financing.", 'Price: ' + usd(price) + ' · Deposit: ' + dep + '% (' + usd(price * dep / 100) + ') · Rate: ' + calc.rate.value + '% · Term: ' + calc.years.value + ' years']);
   });
   calcUpdate();
+
+  /* ---------- Currency switch (UGX / USD) ---------- */
+  var budgetSel = $('[data-budget]');
+  function labelBudgets() {
+    $$('option[data-ugx]', budgetSel).forEach(function (o) {
+      var rent = o.hasAttribute('data-rent');
+      o.textContent = (CUR === 'UGX' ? 'UGX ' + trim(+o.dataset.ugx / (rent ? 1e6 : 1e9), 1) + (rent ? 'M' : 'B') : '$' + (+o.dataset.usd).toLocaleString('en-US')) + (rent ? ' / month' : '');
+    });
+  }
+  function setCurrency(c) {
+    CUR = c;
+    try { localStorage.setItem('nv-cur', c); } catch (e) { /* storage blocked */ }
+    $$('[data-cur]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.cur === c)); });
+    labelBudgets();
+    if (state.budget) applySearchQuiet();
+    render(); calcUpdate(); showArea(currentArea);
+    if (dlg.open && openId) openHome(openId);
+  }
+  function applySearchQuiet() { var opt = budgetSel.options[budgetSel.selectedIndex]; state.budget = opt.value ? (CUR === 'UGX' ? +opt.dataset.ugx / RATE : +opt.dataset.usd) : 0; }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-cur]'); if (b && b.dataset.cur !== CUR) setCurrency(b.dataset.cur); });
+  setCurrency(CUR);
 
   /* ---------- Testimonials ---------- */
   var quotes = $$('[data-quotes] blockquote'), dots = $('[data-quote-dots]'), qi = 0, qTimer;

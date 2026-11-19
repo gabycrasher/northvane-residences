@@ -303,3 +303,10 @@ html.js .reveal-up.is-in { opacity: 1; transform: none; transition: opacity .9s 
 .dlg-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
 .calc-box > .btn { justify-self: start; }
 .form-note a { color: inherit; font-weight: 700; }
+
+/* Currency switch */
+.cur { flex: none; display: inline-flex; margin-left: auto; padding: 3px; border-radius: 999px; background: var(--sand-2); }
+.cur button { min-height: 36px; padding: 0 .85rem; border: 0; border-radius: 999px; background: transparent; font: 800 .78rem var(--sans); letter-spacing: .08em; cursor: pointer; color: var(--muted); }
+.cur button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.calc-copy .cur { margin: 1rem 0 0; }
+.cur-note { margin: .6rem 0 0; font-size: .82rem; color: var(--muted); }
