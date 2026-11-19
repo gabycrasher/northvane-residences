@@ -128,14 +128,19 @@
     var o = e.target.closest('[data-open]');
     if (o) openHome(o.dataset.open);
   });
-  $('[data-search]').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var f = e.target;
+  function applySearch(f) {
     state.area = f.area.value; state.type = f.type.value; state.budget = +f.budget.value || 0;
     state.filter = 'all';
     $$('[data-filter]').forEach(function (x) { x.classList.toggle('is-on', x.dataset.filter === 'all'); x.setAttribute('aria-pressed', String(x.dataset.filter === 'all')); });
     render();
     $('#homes').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  }
+  var optText = function (sel) { return sel.options[sel.selectedIndex].text; };
+  $('[data-search]').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target;
+    applySearch(f);
+    whatsapp(["Hello Northvane, I'm looking for a home.", 'Area: ' + optText(f.area) + ' · Type: ' + optText(f.type) + ' · Budget: ' + optText(f.budget)]);
   });
   note.addEventListener('click', function () { if (!state.area && !state.type && !state.budget) return; state.area = state.type = ''; state.budget = 0; $('[data-search]').reset(); render(); });
 
@@ -215,7 +220,7 @@
     var b = e.target.closest('[data-area]');
     if (b && (b.classList.contains('pin') || b.getAttribute('role') === 'tab')) showArea(b.dataset.area);
     var s = e.target.closest('[data-area-search]');
-    if (s) { var f = $('[data-search]'); f.area.value = s.dataset.areaSearch; f.type.value = ''; f.budget.value = ''; f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event('submit', { cancelable: true })); }
+    if (s) { var f = $('[data-search]'); f.area.value = s.dataset.areaSearch; f.type.value = ''; f.budget.value = ''; applySearch(f); }
   });
   showArea('Kololo');
 
@@ -242,7 +247,8 @@
   calc.addEventListener('input', calcUpdate);
   calc.addEventListener('submit', function (e) {
     e.preventDefault();
-    whatsapp(['Hello Northvane, I would like to talk to an agent about financing.', 'Home price: ' + $('[data-out="price"]').textContent, 'Deposit: ' + $('[data-out="deposit"]').textContent, 'Rate: ' + $('[data-out="rate"]').textContent + ' over ' + $('[data-out="years"]').textContent, 'Estimated monthly repayment: ' + $('[data-monthly]').textContent]);
+    var price = +calc.price.value, dep = +calc.deposit.value;
+    whatsapp(["Hello Northvane, I'd like to speak to an agent about financing.", 'Price: ' + usd(price) + ' · Deposit: ' + dep + '% (' + usd(price * dep / 100) + ') · Rate: ' + calc.rate.value + '% · Term: ' + calc.years.value + ' years']);
   });
   calcUpdate();
 
@@ -269,8 +275,15 @@
     if (bad.length) { formNote.textContent = 'Please add your name and a phone number or email.'; form[bad[0]].focus(); return; }
     var home = homeSelect.value ? homeSelect.options[homeSelect.selectedIndex].text : 'a home that fits your search';
     var picked = homeSelect.value ? homes.filter(function (x) { return x.id === homeSelect.value; })[0] : null;
-    var url = whatsapp(['Hello Northvane, I would like to book a viewing.', 'Name: ' + form.name.value.trim(), 'Contact: ' + form.contact.value.trim(), 'Home: ' + (picked ? homeLine(picked) : 'any home that fits my search'), 'Preferred time: ' + form.slot.value]);
+    var url = whatsapp(["Hello Northvane, I'd like to request a viewing.", 'Name: ' + form.name.value.trim() + ' · Contact: ' + form.contact.value.trim(), 'Property: ' + (picked ? picked.title + ' (' + picked.area + ', ref ' + picked.id.toUpperCase() + ')' : 'Any home that fits my search') + ' · Preferred time: ' + form.slot.value]);
     formNote.innerHTML = 'Thanks, ' + form.name.value.trim().split(' ')[0].replace(/[<>&"]/g, '') + '. WhatsApp has opened with your viewing request for ' + home.replace(/[<>&"]/g, '') + '. Just press send. <a href="' + url + '" target="_blank" rel="noopener">Didn\'t open? Tap here.</a>';
     form.reset();
+  });
+
+  /* Re-measure the scroll animations once everything has loaded, then honour a #section link (a pinned
+     section measured before load could otherwise overlap the section the visitor jumped to). */
+  if (ST) window.addEventListener('load', function () {
+    ST.refresh();
+    if (location.hash.length > 1) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
   });
 })();
