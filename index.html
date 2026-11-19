@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Northvane Residences · Homes in Kampala's best neighbourhoods</title>
+  <meta name="description" content="A fictional real estate website concept: curated homes for sale and rent, neighbourhood guides, a mortgage calculator and viewing requests.">
+  <meta name="theme-color" content="#0f1a1c">
+  <meta property="og:title" content="Northvane Residences">
+  <meta property="og:description" content="Find the home that fits the life you are building. A real estate website concept.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&h=630&q=80">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=80" imagesrcset="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=78 800w, https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=80 1600w, https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2400&q=80 2400w" imagesizes="100vw" fetchpriority="high">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="js/opening.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ Signature opening: the blueprint becomes a home ============ -->
+<div class="opening" data-opening hidden aria-hidden="true">
+  <div class="op-grid"></div>
+  <svg class="op-plan" viewBox="0 0 600 360" data-op-plan>
+    <g class="op-dim">
+      <path d="M60 330 H540" /><path d="M60 322 v16 M540 322 v16" />
+      <text x="300" y="352" text-anchor="middle" data-op-width>0.0 m</text>
+      <path d="M572 92 V300" /><path d="M564 92 h16 M564 300 h16" />
+      <text x="586" y="200" data-op-height>0.0 m</text>
+    </g>
+    <g class="op-lines">
+      <path d="M40 300 H560" />
+      <path d="M80 300 V150 H330 V300" />
+      <path d="M330 300 V92 H520 V300" />
+      <path d="M62 150 H350" />
+      <path d="M312 92 H540" />
+      <path d="M110 300 V250 H170 V300" />
+      <path d="M200 190 H300 V250 H200 Z" />
+      <path d="M360 130 H490 V200 H360 Z" />
+      <path d="M360 230 H490 V280 H360 Z" />
+      <path d="M425 130 V200 M425 230 V280" />
+      <path d="M250 190 V250" />
+      <path d="M100 150 V120 H160 V150" />
+    </g>
+    <g class="op-lights">
+      <rect x="200" y="190" width="100" height="60" />
+      <rect x="360" y="130" width="130" height="70" />
+      <rect x="360" y="230" width="130" height="50" />
+      <rect x="110" y="250" width="60" height="50" />
+    </g>
+  </svg>
+  <div class="op-brand"><span>Northvane</span><small>Residences · Kampala</small></div>
+  <p class="op-caption" data-op-caption>Drawing your next address…</p>
+  <button class="op-skip" type="button" data-skip>Skip intro</button>
+</div>
+
+<!-- ============ Header ============ -->
+<header class="site-header" data-header>
+  <a class="brand" href="#top" aria-label="Northvane Residences, back to top">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34V16L20 6l14 10v18" /><path d="M14 34V22h12v12" /><path d="M20 6v8" /></svg>
+    <span class="brand-word">Northvane<small>Residences</small></span>
+  </a>
+  <nav class="nav" aria-label="Main" data-nav>
+    <a href="#homes">Homes</a>
+    <a href="#tour">Inside</a>
+    <a href="#areas">Neighbourhoods</a>
+    <a href="#calculator">Calculator</a>
+    <a href="#agents">Agents</a>
+  </nav>
+  <a class="btn btn-small header-cta" href="#viewing">Book a viewing</a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn><span></span><span></span><span class="sr">Menu</span></button>
+</header>
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <a href="#homes">Homes</a><a href="#tour">Inside a home</a><a href="#areas">Neighbourhoods</a><a href="#calculator">Mortgage calculator</a><a href="#agents">Agents</a><a href="#viewing" class="btn">Book a viewing</a>
+</div>
+
+<main id="main">
+  <!-- ============ Hero with search ============ -->
+  <section class="hero" id="top">
+    <div class="hero-media" data-hero-media>
+      <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=80"
+           srcset="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=78 800w, https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=80 1600w, https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2400&q=80 2400w"
+           sizes="100vw" alt="A modern white villa with a swimming pool and outdoor lounge area" fetchpriority="high">
+    </div>
+    <div class="hero-inner">
+      <p class="eyebrow reveal-up">Kololo · Naguru · Muyenga · Lubowa · Entebbe</p>
+      <h1 class="hero-title reveal-up">Find the home that fits the life <em>you're building.</em></h1>
+      <p class="hero-sub reveal-up">Hand-picked homes to buy and rent, walked through by agents who live in the neighbourhoods they sell.</p>
+      <form class="search reveal-up" data-search>
+        <label><span>Area</span>
+          <select name="area"><option value="">Any area</option><option>Kololo</option><option>Naguru</option><option>Muyenga</option><option>Lubowa</option><option>Bugolobi</option><option>Entebbe</option></select>
+        </label>
+        <label><span>Type</span>
+          <select name="type"><option value="">Any type</option><option value="villa">Villa</option><option value="apartment">Apartment</option><option value="townhouse">Townhouse</option></select>
+        </label>
+        <label><span>Max budget</span>
+          <select name="budget"><option value="">No limit</option><option value="300000">$300,000</option><option value="600000">$600,000</option><option value="1000000">$1,000,000</option><option value="3000">$3,000 / month</option></select>
+        </label>
+        <button class="btn" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>Search homes</button>
+      </form>
+    </div>
+    <div class="hero-badge reveal-up" aria-hidden="true"><b data-count="48">0</b><span>homes<br>available now</span></div>
+  </section>
+
+  <!-- ============ Proof strip ============ -->
+  <section class="stats" aria-label="Northvane in numbers">
+    <div><b data-count="340" data-suffix="+">0</b><span>Homes sold &amp; let</span></div>
+    <div><b data-count="12">0</b><span>Neighbourhoods covered</span></div>
+    <div><b data-count="9">0</b><span>Days, average to an offer</span></div>
+    <div><b data-count="4.9" data-decimals="1">0</b><span>Average client rating</span></div>
+  </section>
+
+  <!-- ============ Listings ============ -->
+  <section class="section listings" id="homes" aria-labelledby="homes-title">
+    <div class="section-head">
+      <p class="eyebrow">Featured homes</p>
+      <h2 class="section-title" id="homes-title">On the market <em>this week</em></h2>
+    </div>
+    <div class="filters" role="toolbar" aria-label="Filter homes" data-filters>
+      <button type="button" class="chip is-on" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="chip" data-filter="sale" aria-pressed="false">For sale</button>
+      <button type="button" class="chip" data-filter="rent" aria-pressed="false">For rent</button>
+      <button type="button" class="chip" data-filter="saved" aria-pressed="false">Saved <span data-saved-count>0</span></button>
+    </div>
+    <p class="result-note" data-result-note aria-live="polite"></p>
+    <div class="cards" data-cards></div>
+  </section>
+
+  <!-- ============ Inside: horizontal room-by-room walk-through ============ -->
+  <section class="tour" id="tour" aria-labelledby="tour-title">
+    <div class="tour-pin" data-tour>
+      <div class="tour-head">
+        <p class="eyebrow">Inside a Northvane home</p>
+        <h2 class="section-title" id="tour-title">Walk through <em>before you visit.</em></h2>
+        <p class="tour-progress"><span data-tour-room>01</span> / 04 rooms</p>
+      </div>
+      <div class="tour-track" data-tour-track>
+        <figure class="room"><img loading="lazy" src="https://images.unsplash.com/photo-1758448511322-8bfc73daf606?auto=format&fit=crop&w=1400&q=78" alt="Modern living room with a sectional sofa and a large window"><figcaption><span>01 · Living</span><strong>Light that follows the day</strong><p>Double-height glazing faces east, so mornings start bright and evenings stay cool.</p></figcaption></figure>
+        <figure class="room"><img loading="lazy" src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1400&q=78" alt="Modern white kitchen with a marble island"><figcaption><span>02 · Kitchen</span><strong>An island for six</strong><p>Quartz worktops, a walk-in pantry and a service door to the garden kitchen.</p></figcaption></figure>
+        <figure class="room"><img loading="lazy" src="https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?auto=format&fit=crop&w=1400&q=78" alt="A bedroom with dark grey walls and a large bed"><figcaption><span>03 · Main suite</span><strong>Quiet by design</strong><p>Acoustic glazing, a dressing room and a bathroom with a soaking tub.</p></figcaption></figure>
+        <figure class="room"><img loading="lazy" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=78" alt="White and grey house beside a swimming pool"><figcaption><span>04 · Terrace</span><strong>Outdoor living, all year</strong><p>A shaded terrace, a 12-metre pool and solar backup for the whole house.</p></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Neighbourhoods ============ -->
+  <section class="section areas" id="areas" aria-labelledby="areas-title">
+    <div class="section-head">
+      <p class="eyebrow">Neighbourhood guide</p>
+      <h2 class="section-title" id="areas-title">Choose the street, <em>not just the house.</em></h2>
+    </div>
+    <div class="areas-grid">
+      <div class="area-map" aria-hidden="true">
+        <svg viewBox="0 0 400 320" data-area-map>
+          <path class="water" d="M250 250 C300 230 350 260 400 240 V320 H210 C220 290 230 262 250 250Z" />
+          <path class="road" d="M20 160 C120 150 180 120 260 70 S360 30 390 20" />
+          <path class="road" d="M80 300 C120 230 170 190 230 150 S330 110 380 120" />
+          <path class="road thin" d="M150 20 C160 100 170 180 160 300" />
+        </svg>
+        <button type="button" class="pin" style="--x:38%;--y:30%" data-area="Kololo" aria-label="Kololo"><span>Kololo</span></button>
+        <button type="button" class="pin" style="--x:58%;--y:22%" data-area="Naguru" aria-label="Naguru"><span>Naguru</span></button>
+        <button type="button" class="pin" style="--x:66%;--y:46%" data-area="Bugolobi" aria-label="Bugolobi"><span>Bugolobi</span></button>
+        <button type="button" class="pin" style="--x:46%;--y:64%" data-area="Muyenga" aria-label="Muyenga"><span>Muyenga</span></button>
+        <button type="button" class="pin" style="--x:22%;--y:78%" data-area="Lubowa" aria-label="Lubowa"><span>Lubowa</span></button>
+        <button type="button" class="pin" style="--x:80%;--y:84%" data-area="Entebbe" aria-label="Entebbe"><span>Entebbe</span></button>
+      </div>
+      <div class="area-tabs" role="tablist" aria-label="Neighbourhoods" data-area-tabs></div>
+      <article class="area-card" data-area-card aria-live="polite"></article>
+    </div>
+  </section>
+
+  <!-- ============ Mortgage calculator ============ -->
+  <section class="section calc" id="calculator" aria-labelledby="calc-title">
+    <div class="calc-copy">
+      <p class="eyebrow">Mortgage calculator</p>
+      <h2 class="section-title" id="calc-title">Know your number <em>before you fall in love.</em></h2>
+      <p>Move the sliders to see a monthly repayment. Figures are an illustration only.</p>
+    </div>
+    <form class="calc-box" data-calc>
+      <label><span>Home price <output data-out="price"></output></span><input type="range" name="price" min="80000" max="2000000" step="5000" value="450000"></label>
+      <label><span>Deposit <output data-out="deposit"></output></span><input type="range" name="deposit" min="10" max="60" step="1" value="25"></label>
+      <label><span>Interest rate <output data-out="rate"></output></span><input type="range" name="rate" min="6" max="20" step="0.25" value="11.5"></label>
+      <label><span>Term <output data-out="years"></output></span><input type="range" name="years" min="5" max="25" step="1" value="20"></label>
+      <div class="calc-result">
+        <div class="donut" data-donut><svg viewBox="0 0 42 42"><circle class="track" cx="21" cy="21" r="15.9" /><circle class="principal" cx="21" cy="21" r="15.9" data-donut-principal /></svg><div><small>Monthly</small><b data-monthly>$0</b></div></div>
+        <dl><div><dt>Loan amount</dt><dd data-loan>$0</dd></div><div><dt>Total interest</dt><dd data-interest>$0</dd></div><div><dt>Total repaid</dt><dd data-total>$0</dd></div></dl>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ Agents ============ -->
+  <section class="section agents" id="agents" aria-labelledby="agents-title">
+    <div class="section-head">
+      <p class="eyebrow">Your agents</p>
+      <h2 class="section-title" id="agents-title">People who <em>pick up the phone.</em></h2>
+    </div>
+    <div class="agent-row">
+      <article class="agent"><img loading="lazy" src="https://images.unsplash.com/photo-1563132337-f159f484226c?auto=format&fit=crop&w=700&h=860&q=78" alt="Portrait of agent Amara Kintu in an orange blazer"><div><h3>Amara Kintu</h3><p>Kololo &amp; Naguru · 11 years</p><span>Sold 96 homes</span></div></article>
+      <article class="agent"><img loading="lazy" src="https://images.unsplash.com/photo-1578758760917-e36305c1b872?auto=format&fit=crop&w=700&h=860&q=78" alt="Portrait of agent Daniel Ssebunya in a black suit"><div><h3>Daniel Ssebunya</h3><p>Muyenga &amp; Lubowa · 8 years</p><span>Sold 71 homes</span></div></article>
+      <article class="agent"><img loading="lazy" src="https://images.unsplash.com/photo-1643488448207-cea4ca335830?auto=format&fit=crop&w=700&h=860&q=78" alt="Portrait of agent Ruth Akello wearing glasses"><div><h3>Ruth Akello</h3><p>Rentals &amp; Entebbe · 6 years</p><span>Let 140 homes</span></div></article>
+    </div>
+  </section>
+
+  <!-- ============ Testimonials ============ -->
+  <section class="section quotes" aria-label="What clients say">
+    <div class="quote-track" data-quotes>
+      <blockquote class="is-on"><p>“They found us a house in Naguru before it was listed anywhere else, and handled the land search in a week.”</p><cite>— Grace &amp; Paul, bought in 2026</cite></blockquote>
+      <blockquote><p>“As a returning family abroad, the video walk-throughs meant we chose our home from London and moved in on day one.”</p><cite>— The Mugisha family, renting in Kololo</cite></blockquote>
+      <blockquote><p>“Honest about what a house is worth, and honest about what it isn't. That's rare.”</p><cite>— Ivan, sold in Muyenga</cite></blockquote>
+    </div>
+    <div class="quote-dots" data-quote-dots></div>
+  </section>
+
+  <!-- ============ Viewing request ============ -->
+  <section class="section viewing" id="viewing" aria-labelledby="viewing-title">
+    <div class="viewing-media"><img loading="lazy" src="https://images.unsplash.com/photo-1757524492552-d47a66a2b63e?auto=format&fit=crop&w=1400&q=78" alt="A modern house with large windows glowing at dusk"></div>
+    <form class="viewing-form" data-viewing-form novalidate>
+      <p class="eyebrow">Book a viewing</p>
+      <h2 class="section-title" id="viewing-title">See it <em>in person.</em></h2>
+      <label><span>Your name</span><input name="name" required autocomplete="name"></label>
+      <label><span>Phone or email</span><input name="contact" required></label>
+      <label><span>Home you'd like to see</span><select name="home" data-home-select><option value="">Any home that fits my search</option></select></label>
+      <fieldset class="slots"><legend>Preferred time</legend>
+        <label><input type="radio" name="slot" value="Weekday morning" checked><span>Weekday morning</span></label>
+        <label><input type="radio" name="slot" value="Weekday evening"><span>Weekday evening</span></label>
+        <label><input type="radio" name="slot" value="Saturday"><span>Saturday</span></label>
+      </fieldset>
+      <button class="btn" type="submit">Request viewing</button>
+      <p class="form-note" data-form-note role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+
+<!-- ============ Listing details dialog ============ -->
+<dialog class="listing-dialog" data-dialog aria-labelledby="dlg-title">
+  <button class="dlg-close" type="button" data-dialog-close aria-label="Close">×</button>
+  <div class="dlg-body" data-dialog-body></div>
+</dialog>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="brand-word">Northvane<small>Residences</small></div>
+    <p>Plot 00, Fictional Close, Kampala · Mon–Sat, 8am–6pm</p>
+  </div>
+  <p class="concept-note"><strong>Concept website.</strong> Northvane Residences is a fictional company created as a design showcase. Every listing, price, agent and testimonial is invented, and no form on this page sends anything.</p>
+  <p class="credits">Photos from <a href="https://unsplash.com/?utm_source=northvane_concept&amp;utm_medium=referral" target="_blank" rel="noopener">Unsplash</a> by @johnfo, @framesforyourheart, @webaliser, @vettexan, @steve4c, @tobiasw, @smrodriguez, @zacgudakov, @fromitaly, @aalolens, @jsnbrsc, @stephenowen23, @heyquilia, @fideletty, @gift_habeshaw and @kelvinroom.</p>
+</footer>
+<!-- WhatsApp: chat with the designer -->
+<a class="wa-float" href="https://wa.me/256756728345?text=Hello!%20I%20just%20saw%20the%20Northvane%20Residences%20website%20you%20designed%20and%20I%20would%20like%20a%20website%20like%20this%20for%20my%20business.%20Can%20we%20talk%3F" target="_blank" rel="noopener" aria-label="Chat on WhatsApp about a website like this"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span>Chat on WhatsApp</span></a>
+</body>
+</html>
