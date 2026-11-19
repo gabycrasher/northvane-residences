@@ -95,7 +95,7 @@
       <p class="eyebrow reveal-up">Kololo · Naguru · Muyenga · Lubowa · Entebbe</p>
       <h1 class="hero-title reveal-up">Find the home that fits the life <em>you're building.</em></h1>
       <p class="hero-sub reveal-up">Hand-picked homes to buy and rent, walked through by agents who live in the neighbourhoods they sell.</p>
-      <form class="search reveal-up" data-search>
+      <form class="search reveal-up" action="#homes" data-search>
         <label><span>Area</span>
           <select name="area"><option value="">Any area</option><option>Kololo</option><option>Naguru</option><option>Muyenga</option><option>Lubowa</option><option>Bugolobi</option><option>Entebbe</option></select>
         </label>
@@ -185,7 +185,8 @@
       <h2 class="section-title" id="calc-title">Know your number <em>before you fall in love.</em></h2>
       <p>Move the sliders to see a monthly repayment. Figures are an illustration only.</p>
     </div>
-    <form class="calc-box" data-calc>
+    <form class="calc-box" action="https://wa.me/256756728345" method="get" target="_blank" data-calc>
+      <input type="hidden" name="text" value="Hello Northvane, I'd like to talk to an agent about a mortgage.">
       <label><span>Home price <output data-out="price"></output></span><input type="range" name="price" min="80000" max="2000000" step="5000" value="450000"></label>
       <label><span>Deposit <output data-out="deposit"></output></span><input type="range" name="deposit" min="10" max="60" step="1" value="25"></label>
       <label><span>Interest rate <output data-out="rate"></output></span><input type="range" name="rate" min="6" max="20" step="0.25" value="11.5"></label>
@@ -194,6 +195,7 @@
         <div class="donut" data-donut><svg viewBox="0 0 42 42"><circle class="track" cx="21" cy="21" r="15.9" /><circle class="principal" cx="21" cy="21" r="15.9" data-donut-principal /></svg><div><small>Monthly</small><b data-monthly>$0</b></div></div>
         <dl><div><dt>Loan amount</dt><dd data-loan>$0</dd></div><div><dt>Total interest</dt><dd data-interest>$0</dd></div><div><dt>Total repaid</dt><dd data-total>$0</dd></div></dl>
       </div>
+      <button class="btn btn-wa" type="submit">Ask an agent about this budget</button>
     </form>
   </section>
 
@@ -223,7 +225,8 @@
   <!-- ============ Viewing request ============ -->
   <section class="section viewing" id="viewing" aria-labelledby="viewing-title">
     <div class="viewing-media"><img loading="lazy" src="https://images.unsplash.com/photo-1757524492552-d47a66a2b63e?auto=format&fit=crop&w=1400&q=78" alt="A modern house with large windows glowing at dusk"></div>
-    <form class="viewing-form" data-viewing-form novalidate>
+    <form class="viewing-form" action="https://wa.me/256756728345" method="get" target="_blank" data-viewing-form novalidate>
+      <input type="hidden" name="text" value="Hello Northvane, I'd like to book a viewing.">
       <p class="eyebrow">Book a viewing</p>
       <h2 class="section-title" id="viewing-title">See it <em>in person.</em></h2>
       <label><span>Your name</span><input name="name" required autocomplete="name"></label>
@@ -234,7 +237,7 @@
         <label><input type="radio" name="slot" value="Weekday evening"><span>Weekday evening</span></label>
         <label><input type="radio" name="slot" value="Saturday"><span>Saturday</span></label>
       </fieldset>
-      <button class="btn" type="submit">Request viewing</button>
+      <button class="btn btn-wa" type="submit">Request viewing on WhatsApp</button>
       <p class="form-note" data-form-note role="status" aria-live="polite"></p>
     </form>
   </section>
@@ -251,7 +254,7 @@
     <div class="brand-word">Northvane<small>Residences</small></div>
     <p>Plot 00, Fictional Close, Kampala · Mon–Sat, 8am–6pm</p>
   </div>
-  <p class="concept-note"><strong>Concept website.</strong> Northvane Residences is a fictional company created as a design showcase. Every listing, price, agent and testimonial is invented, and no form on this page sends anything.</p>
+  <p class="concept-note"><strong>Concept website.</strong> Northvane Residences is a fictional company created as a design showcase. Every listing, price, agent and testimonial is invented. Viewing requests and enquiries open WhatsApp with the details filled in, so you can see how a real enquiry would arrive.</p>
   <p class="credits">Photos from <a href="https://unsplash.com/?utm_source=northvane_concept&amp;utm_medium=referral" target="_blank" rel="noopener">Unsplash</a> by @johnfo, @framesforyourheart, @webaliser, @vettexan, @steve4c, @tobiasw, @smrodriguez, @zacgudakov, @fromitaly, @aalolens, @jsnbrsc, @stephenowen23, @heyquilia, @fideletty, @gift_habeshaw and @kelvinroom.</p>
 </footer>
 <!-- WhatsApp: chat with the designer -->

@@ -9,6 +9,15 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var img = function (id, w, h) { return 'https://images.unsplash.com/' + id + '?auto=format&fit=crop&w=' + w + (h ? '&h=' + h : '') + '&q=78'; };
   var usd = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+  // Enquiries go to WhatsApp with the details pre-filled (opened from the click, so pop-up blockers allow it).
+  var WA_NUMBER = '256756728345';
+  function whatsapp(lines) {
+    var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.filter(Boolean).join('\n'));
+    var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    return url;
+  }
+  var homeLine = function (h) { return h.title + ' (' + h.area + ', ref ' + h.id.toUpperCase() + ') · ' + (h.deal === 'rent' ? usd(h.price) + '/month' : usd(h.price)) + ' · ' + h.beds + ' bed, ' + h.baths + ' bath, ' + h.size + ' m²'; };
 
   /* ---------- Header + mobile menu ---------- */
   var header = $('[data-header]');
@@ -139,7 +148,7 @@
       '<div class="dlg-info"><p class="eyebrow">' + h.area + ' · ' + (h.deal === 'rent' ? 'For rent' : 'For sale') + ' · Ref ' + h.id.toUpperCase() + '</p><h3 id="dlg-title">' + h.title + '</h3><div class="card-price">' + priceLabel(h) + '</div>' +
       '<ul><li>' + h.beds + ' bedrooms</li><li>' + h.baths + ' bathrooms</li><li>' + h.size + ' m²</li>' + h.extras.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
       '<p>A fictional listing for this concept site. In a live site this panel would hold the floor plan, the full gallery and the land title status.</p>' +
-      '<a class="btn" href="#viewing" data-book="' + h.id + '">Book a viewing of this home</a></div>';
+      '<div class="dlg-actions"><button class="btn btn-wa" type="button" data-enquire="' + h.id + '">Enquire on WhatsApp</button><a class="btn btn-line" href="#viewing" data-book="' + h.id + '">Book a viewing</a></div></div>';
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
   }
   function closeDlg() { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); }
@@ -148,6 +157,12 @@
     if (e.target === dlg) closeDlg();
     var b = e.target.closest('[data-book]');
     if (b) { homeSelect.value = b.dataset.book; closeDlg(); }
+    var q = e.target.closest('[data-enquire]');
+    if (q) {
+      var h = homes.filter(function (x) { return x.id === q.dataset.enquire; })[0];
+      whatsapp(['Hello Northvane, I am interested in this property:', homeLine(h), 'Extras: ' + h.extras.join(', '), '', 'Is it still available, and when could I view it?']);
+      q.textContent = 'WhatsApp opened ✓';
+    }
   });
 
   /* ---------- Room walk-through: pinned horizontal scroll on wide screens, swipe on phones ---------- */
@@ -225,7 +240,10 @@
   }
   $('[data-donut-principal]').setAttribute('pathLength', '100');
   calc.addEventListener('input', calcUpdate);
-  calc.addEventListener('submit', function (e) { e.preventDefault(); });
+  calc.addEventListener('submit', function (e) {
+    e.preventDefault();
+    whatsapp(['Hello Northvane, I would like to talk to an agent about financing.', 'Home price: ' + $('[data-out="price"]').textContent, 'Deposit: ' + $('[data-out="deposit"]').textContent, 'Rate: ' + $('[data-out="rate"]').textContent + ' over ' + $('[data-out="years"]').textContent, 'Estimated monthly repayment: ' + $('[data-monthly]').textContent]);
+  });
   calcUpdate();
 
   /* ---------- Testimonials ---------- */
@@ -250,7 +268,9 @@
     formNote.classList.toggle('is-error', bad.length > 0);
     if (bad.length) { formNote.textContent = 'Please add your name and a phone number or email.'; form[bad[0]].focus(); return; }
     var home = homeSelect.value ? homeSelect.options[homeSelect.selectedIndex].text : 'a home that fits your search';
-    formNote.textContent = 'Thanks, ' + form.name.value.trim().split(' ')[0] + '. This is a concept website, so nothing was sent. On a live site, an agent would call you about ' + home + ' (' + form.slot.value.toLowerCase() + ').';
+    var picked = homeSelect.value ? homes.filter(function (x) { return x.id === homeSelect.value; })[0] : null;
+    var url = whatsapp(['Hello Northvane, I would like to book a viewing.', 'Name: ' + form.name.value.trim(), 'Contact: ' + form.contact.value.trim(), 'Home: ' + (picked ? homeLine(picked) : 'any home that fits my search'), 'Preferred time: ' + form.slot.value]);
+    formNote.innerHTML = 'Thanks, ' + form.name.value.trim().split(' ')[0].replace(/[<>&"]/g, '') + '. WhatsApp has opened with your viewing request for ' + home.replace(/[<>&"]/g, '') + '. Just press send. <a href="' + url + '" target="_blank" rel="noopener">Didn\'t open? Tap here.</a>';
     form.reset();
   });
 })();
